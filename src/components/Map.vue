@@ -1,5 +1,5 @@
 <template>
-  <div id='turfMap' style="height: 325px"></div>
+  <div id="turfMap" style="height: 325px"></div>
 </template>
 
 <script>
@@ -52,14 +52,16 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   #turfMap {
     margin-top: 30px;
   }
+  
   .leaflet-touch .leaflet-control-fullscreen a {
-  background-position: 0px 0px;
-}
-.leaflet-touch.leaflet-fullscreen-on .leaflet-control-fullscreen a {
-  background-position: 0px -26px;
-}
+    background-position: 0px 0px;
+  }
+
+  .leaflet-touch.leaflet-fullscreen-on .leaflet-control-fullscreen a {
+    background-position: 0px -26px;
+  }
 </style>

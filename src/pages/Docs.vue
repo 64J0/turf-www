@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <leaflet-map ref="turfMap" id="turfMap" v-dom-portal="mapContainer"></leaflet-map>
+  <article>
+    <leaflet-map ref="turfMap" v-dom-portal="mapContainer"></leaflet-map>
     <module v-for="mod in modules" :key="mod.name" :module="mod" v-on:changeMap="moveMap"></module>
-  </div>
+  </article>
 </template>
 
 <script>
@@ -22,7 +22,6 @@ export default {
       modules: []
     }
   },
-
   methods: {
     moveMap (moduleName) {
       this.mapContainer = '#map_' + moduleName
@@ -34,7 +33,7 @@ export default {
     }
   },
   created: function () {
-    var allMods = []
+    let allMods = []
     config.modules.map(function (group) {
       allMods = allMods.concat(group.modules)
     })

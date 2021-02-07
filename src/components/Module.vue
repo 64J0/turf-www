@@ -1,18 +1,20 @@
 <template>
-  <Row class="mainContentArea">
-    <Col span="16">
+  <div class="mainContentArea">
+    <section class="moduleInfo">
       <h3 :id='module.name'>{{module.name}}</h3>
       <p v-html='module.description' v-bind:class="module.name" v-observe-visibility="visibilityChanged"></p>
       <h4>Arguments</h4>
-      <div>
+      <div style="overflow: auto;">
         <table>
           <thead>
             <tr>
-              <th v-for="col in cols" v-bind:style="{ width: col.width + 'px' }">{{col.title}}</th>
+              <th v-for="col in cols" v-bind:style="{ width: col.width + 'px' }" :key="col.title">
+                {{col.title}}
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="param in module.params">
+            <tr v-for="param in module.params" :key="param.Argument">
               <td>{{param.Argument}}</td>
               <td v-html="param.Type"></td>
               <td v-html="param.Description"></td>
@@ -20,16 +22,18 @@
           </tbody>
         </table>
       </div>
-      <div v-if="module.options !== null">
+      <div v-if="module.options !== null" style="overflow: auto;">
         <h4>Options</h4>
         <table>
           <thead>
             <tr>
-              <th v-for="col in optionsCols" v-bind:style="{ width: col.width + 'px' }">{{col.title}}</th>
+              <th v-for="col in optionsCols" v-bind:style="{ width: col.width ? col.width + 'px' : 'inherit' }" :key="col.title">
+                {{col.title}}
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="option in module.options">
+            <tr v-for="option in module.options" :key="option.Prop">
               <td>{{option.Prop}}</td>
               <td v-html="option.Type"></td>
               <td>{{option.Default}}</td>
@@ -46,9 +50,9 @@
         <h4>Throws</h4>
         <p>{{module.throws[0].type}} - {{module.throws[0].desc}}</p>
       </div>
-    </Col>
-    <Col span="7" offset="1">
-      <div v-show="module.hasMap">
+    </section>
+    <section class="map">
+      <div v-if="module.hasMap">
         <div :id="'map_' + module.name"></div>
       </div>
       <p class="npmBadge">npm install {{module.npmName}}</p>
@@ -59,14 +63,14 @@
           To use it as a stand-alone module will need to import {{module.npmName}} and call the {{module.name}} method.
         </p>
       </div>
-    </Col>
-    <Col span="24">
+    </section>
+    <section class="example">
       <div v-if="module.snippet !== false">
         <h4>Example</h4>
           <pre v-highlightjs><code class="javascript">{{module.snippet}}</code></pre>
       </div>
-    </Col>
-  </Row>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -126,15 +130,31 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import "../styles/variables.scss";
 
-  .module {
-    background-color: #f6f6f6;
-    padding: 40px;
-    margin-top: 60px;
-    margin-bottom: 40px;
-    border: 2px solid transparentize($blue, 0.9);
+  .mainContentArea {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+
+    section {
+      word-break: normal;
+    }
+
+    .moduleInfo {
+      width: 65%;
+    }
+
+    .map {
+      width: 30%;
+    }
+
+    .example {
+      width: 100%;
+    }
   }
 
   h3 {
@@ -142,6 +162,7 @@ export default {
     font-size: 3rem;
     margin-bottom: 10px;
     margin-top: 0px;
+    word-break: break-all;
   }
 
   table {
@@ -150,6 +171,7 @@ export default {
     border: 1px solid #dddee1;
     width: 100%;
     border-collapse: collapse;
+
     tr {
       th {
         background-color: #F8F8F9;
@@ -158,12 +180,12 @@ export default {
         border-bottom: 1px solid #e9eaec;
       }
     }
+
     td {
       border-bottom: 1px solid #e9eaec;
       padding: 10px 10px;
     }
   }
-
 
   .npmBadge {
     background-color: transparentize($blue, 0.6);
@@ -175,7 +197,8 @@ export default {
     font-weight: 600;
     font-family: 'Montserrat', sans-serif;
   }
-  .hasParent{
+
+  .hasParent {
     background-color: transparentize($blue, 0.3);
     padding: 15px;
     margin-top: 20px;
@@ -183,5 +206,21 @@ export default {
     text-align: right;
     width: 100%;
     font-size: 1rem;
+  }
+
+  @media (max-width: 950px) {
+    .mainContentArea {
+      flex-direction: column;
+      font-size: 0.9rem;
+      padding: 40px 30px;
+
+      h3 {
+        font-size: 2rem;
+      }
+
+      section {
+        width: 100% !important;
+      }
+    }
   }
 </style>

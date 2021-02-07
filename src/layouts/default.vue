@@ -1,30 +1,39 @@
 <template>
-  <Row id="app">
-    <Col span="4" class="sideCol">
-      <sidebar :modules="modules" v-on:changeModule="setModule"></sidebar>
-    </Col>
-    <Col span="18" offset="1">
-        <github></github>
+  <div id="app">
+    <transition name="slide">
+      <aside 
+        class="sideCol"
+        v-if="showSidebar"
+      >
+        <sidebar 
+          :modules="modules" 
+          v-on:changeModule="setModule"
+        />
+      </aside>
+    </transition>
+    <main>
+        <topbar @toggleSidebar="showSidebar = !showSidebar"/>
         <nuxt/>
-    </Col>
-  </Row>
+    </main>
+  </div>
 </template>
 
 <script>
 import Sidebar from '../components/Sidebar.vue'
-import Github from '../components/Github.vue'
+import Topbar from '../components/Topbar.vue'
 import config from '../assets/config.json'
 
 export default {
   name: 'app',
   components: {
     Sidebar,
-    Github
+    Topbar
   },
   data () {
     return {
       selectedModuleName: 'along',
-      modules: config.modules
+      modules: config.modules,
+      showSidebar: false
     }
   },
   computed: {
@@ -40,76 +49,56 @@ export default {
       location.hash = newName
       this.selectedModuleName = newName
     }
+  },
+  mounted: function () {
+    this.showSidebar = window.innerWidth > 1200
   }
 }
 </script>
 
 <style lang="scss">
-
+  @import "../styles/default.scss";
   @import "../styles/variables.scss";
 
-  html {
-    width: 100%;
-    height: 100%;
+  #app {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    background-color: $grey;
   }
 
-  body{
-    font-family: 'Istok Web', sans-serif;
-    color: #444444;
-    font-size: 1rem;
-    min-height: 100%;
-    background: transparentize($grey, 0.15);
-  }
-
-  h1, h2, h3, h4 {
-    font-family: 'Montserrat', serif;
-    color: #5a5a5a;
-  }
-
-  h3 {
-    font-size: 3rem;
-    font-weight: 200;
-    margin-top: 5px;
-  }
-
-  h4 {
-    font-weight: 600;
-    margin: 20px 0px 10px;
-  }
-
-  a {
-    color: $blue;
-    text-underline-position: under;
-    text-decoration-style: solid;
-    text-decoration: underline;
-  }
-
-  .mainContentArea {
-    pre {
-      background-color: $lightGrey;
-      border: 2px solid $grey;
-      overflow-x: auto;
-    }
-  }
   .hljs {
-    background: none!important;
+    background-color: #FFFFFF !important;
     padding: 20px 20px 0px!important;
   }
-  .sideCol{
-    min-height: 100vh;
-  }
-  .mainContentArea{
-    background-color: #f6f6f6;
-    padding: 40px;
-    margin-top: 60px;
-    margin-bottom: 40px;
-    border: 2px solid transparentize($blue, 0.9);
 
-    h3 {
-      font-weight: 200;
-      font-size:3rem;
-      margin-bottom: 10px;
-      margin-top: 0px;
+  aside {
+    min-height: 100vh;
+    width: 270px;
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin: 0 20px 0 40px;
+    width: 60%;
+  }
+
+  .slide-enter-active,
+  .slide-leave-active {
+    transition: all .3s ease;
+  }
+
+  .slide-enter,
+  .slide-leave-to {
+    transform: translateX(10px);
+    opacity: 0;
+  }
+
+  @media (max-width: 900px) {
+    main {
+      margin: 0;
     }
   }
 </style>

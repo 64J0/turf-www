@@ -12,14 +12,12 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Montserrat:200,400' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Istok+Web' },
-      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/iview/2.7.4/styles/iview.css' }
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Istok+Web' }
     ]
   },
   plugins: [
     { src: '~plugins/highlight' },
     { src: '~plugins/DomPortal' },
-    { src: '~plugins/iview', ssr: true },
     { src: '~plugins/Visibility', ssr: false }
   ],
   /*
@@ -33,24 +31,11 @@ module.exports = {
     /*
     ** Run ESLint on save
     */
-    // babel: {
-    //   'plugins': [['import', {
-    //     'libraryName': 'iview',
-    //     'libraryDirectory': 'src/components'
-    //   }]]
-    // },
     publicPath: publicPath,
     vendor: [
-      'iview'
+      // 'iview'
     ],
     extend (config, ctx) {
-      config.module.rules.push({
-        test: /\.vue$/,
-        loader: 'iview-loader',
-        options: {
-          prefix: false
-        }
-      })
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',

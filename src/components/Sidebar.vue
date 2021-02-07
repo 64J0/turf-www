@@ -8,11 +8,12 @@
         <input id="sidebarFilter" v-model="filter" placeholder="Search modules">
       </div>
       <ul class="turfModules">
-        <div v-for="category in displayedModules">
+        <div v-for="category in displayedModules" :key="category.group">
           <li class="menuItem heading">{{category.group}}</li>
           <li v-for="module in category.modules"
             class="menuItem"
             v-on:click="clickModule"
+            :key="module.name"
             >{{module.name}}</li>
         </div>
       </ul>
@@ -60,7 +61,9 @@ export default {
 
 <style lang="scss">
   @import "../styles/variables.scss";
+
   $sidebarBg: #fcfcfc;
+
   .sidebarContents {
     top: 0;
     bottom: 0;
@@ -71,6 +74,7 @@ export default {
       position: fixed;
       padding-left: 30px;
       background-color: $sidebarBg;
+
         .logo {
           height: 120px;
           background-color: #2ECC71;
@@ -78,6 +82,7 @@ export default {
           margin-left: -35px;
           margin-right: 0px;
           cursor: pointer;
+
           h1 {
             font-size: 2rem;
             color: white;
@@ -85,24 +90,28 @@ export default {
             letter-spacing: 0.4rem;
             padding-top: 30px;
             font-weight: 600;
-             &:before {
-              content: '<';
-              opacity: 0;
-              transition: 0.3s;
-            }
-            &:after {
-              content: '>';
-              transition: 0.3s;
-              opacity: 0;
-            }
-            &:hover {
+
               &:before {
-                opacity: 1;
+                content: '<';
+                opacity: 0;
+                transition: 0.3s;
               }
+
               &:after {
-                opacity: 1;
+                content: '>';
+                transition: 0.3s;
+                opacity: 0;
               }
-            }
+                
+              &:hover {
+                &:before {
+                  opacity: 1;
+                }
+
+                &:after {
+                  opacity: 1;
+                }
+              }
           }
         }
 
@@ -114,6 +123,7 @@ export default {
           border: solid 3px #efefef;
           color: #656565;
           transition: 0.3s;
+
           &:focus {
             outline: none;
             border: solid 3px #cccccc;
@@ -129,17 +139,18 @@ export default {
       width: inherit;
       background-color: $sidebarBg;
       padding-left: 30px;
-        &::-webkit-scrollbar-track{
+      
+        &::-webkit-scrollbar-track {
           -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
           background-color: transparentize($blue, 0.98);
         }
 
-        &::-webkit-scrollbar{
+        &::-webkit-scrollbar {
           width: 6px;
           background-color: transparentize($blue, 0.98);
         }
 
-        &::-webkit-scrollbar-thumb{
+        &::-webkit-scrollbar-thumb {
           background-color: transparentize($blue, 0.7);
         }
       }
@@ -152,6 +163,7 @@ export default {
       cursor: pointer;
       list-style-type: none;
     }
+    
     .heading {
       font-weight: 700;
       text-transform: uppercase;
